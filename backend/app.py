@@ -42,7 +42,12 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=[
+        "http://localhost:3000", 
+        "http://127.0.0.1:3000",
+        "https://*.railway.app",
+        "https://*.up.railway.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,6 +61,30 @@ else:
     # Fallback to current directory
     media_dir = Path(".")
     app.mount("/media", StaticFiles(directory=str(media_dir)), name="media")
+
+# Serve frontend static files (for production)
+static_dir = Path("static")
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+    
+    # Serve frontend at root for production
+    @app.get("/{path:path}")
+    async def serve_frontend(path: str):
+        # API routes should not be served by frontend
+        if path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API endpoint not found")
+        
+        # Serve specific files
+        file_path = static_dir / path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(str(file_path))
+        
+        # Fallback to index.html for SPA routing
+        index_path = static_dir / "index.html"
+        if index_path.exists():
+            return FileResponse(str(index_path))
+        
+        raise HTTPException(status_code=404, detail="File not found")
 
 # Request/Response Models
 class StoryRequest(BaseModel):
@@ -458,6 +487,13 @@ def get_file_extension(media_type: str) -> str:
 
 if __name__ == "__main__":
     import uvicorn
+    import os
+    
+    # Get port from environment variable (Railway sets this)
+    port = int(os.environ.get("PORT", 8000))
+    
     print("🎬 Starting DreamDirector API server...")
-    print(f"�� Agent available: {AGENT_AVAILABLE}")
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True) 
+    print(f"🤖 Agent available: {AGENT_AVAILABLE}")
+    print(f"🌐 Server will start on port: {port}")
+    
+    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=False) 
