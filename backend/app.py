@@ -66,25 +66,6 @@ else:
 static_dir = Path("static")
 if static_dir.exists():
     app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
-    
-    # Serve frontend at root for production
-    @app.get("/{path:path}")
-    async def serve_frontend(path: str):
-        # API routes should not be served by frontend
-        if path.startswith("api/"):
-            raise HTTPException(status_code=404, detail="API endpoint not found")
-        
-        # Serve specific files
-        file_path = static_dir / path
-        if file_path.exists() and file_path.is_file():
-            return FileResponse(str(file_path))
-        
-        # Fallback to index.html for SPA routing
-        index_path = static_dir / "index.html"
-        if index_path.exists():
-            return FileResponse(str(index_path))
-        
-        raise HTTPException(status_code=404, detail="File not found")
 
 # Request/Response Models
 class StoryRequest(BaseModel):
@@ -111,9 +92,9 @@ class StoryResponse(BaseModel):
     current_choice: int = 0
     total_choices: int = 0
 
-# Health check endpoint
-@app.get("/")
-async def root():
+# API info endpoint 
+@app.get("/api/info")
+async def api_info():
     return {
         "message": "🎬 DreamDirector API - REAL AI ONLY!",
         "agent_available": AGENT_AVAILABLE,
@@ -482,6 +463,37 @@ def get_file_extension(media_type: str) -> str:
         "music": "wav"
     }
     return extensions.get(media_type, "bin")
+
+# Serve frontend files (must be at the end to not interfere with API routes)
+static_dir = Path("static")
+if static_dir.exists():
+    # Serve index.html for root path
+    @app.get("/")
+    async def serve_index():
+        index_path = static_dir / "index.html"
+        if index_path.exists():
+            return FileResponse(str(index_path))
+        return {"message": "🎬 DreamDirector API - Frontend not built"}
+    
+    # Serve other frontend files (but not API routes)
+    @app.get("/{path:path}")
+    async def serve_frontend_files(path: str):
+        # Don't serve API routes through frontend
+        if path.startswith("api"):
+            raise HTTPException(status_code=404, detail="API endpoint not found")
+        
+        # Serve specific files
+        file_path = static_dir / path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(str(file_path))
+        
+        # For SPA routing, serve index.html for non-file paths
+        if "." not in path:  # Assume it's a route, not a file
+            index_path = static_dir / "index.html"
+            if index_path.exists():
+                return FileResponse(str(index_path))
+        
+        raise HTTPException(status_code=404, detail="File not found")
 
 
 
