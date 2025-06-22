@@ -1,0 +1,45 @@
+# Node modules
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.venv/
+backend/venv/
+
+# Development files
+.git/
+.gitignore
+.history/
+.vscode/
+*.md
+README.md
+LICENSE
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs (will be copied explicitly)
+dist/
+build/
+
+# Local development
+*.log
+*.swp
+*.swo
+*~
+
+# Generated media files (will be created at runtime)
+generated_*
+lyria_*
+*.mp4
+*.wav
+*.png 
