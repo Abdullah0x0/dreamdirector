@@ -4,6 +4,50 @@
 
 DreamDirector is a revolutionary multimodal storytelling experience that combines cutting-edge AI technologies to create infinite, interactive narratives with real-time visual, audio, and video generation. Built for the UC Berkeley AI Hackathon 2025, this project represents the future of immersive digital storytelling.
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/46ac8eb6-4c1e-4730-b716-030f5e903c44" alt="DreamDirector Landing Page" width="800">
+  <br>
+  <em>The main landing page, inviting users to start their cinematic adventure.</em>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6170e172-9fac-4c37-a00d-860a548e777e" alt="About DreamDirector" width="800">
+  <br>
+  <em>A breakdown of the key features and the Google AI tech stack.</em>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/54bbbda5-a042-4949-9fb7-bf0cb616ca87" alt="Empty Media Gallery" width="800">
+  <br>
+  <em>The user's personal media gallery, ready to be filled with generated content.</em>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/58b5273b-774a-4882-8b44-9be1133a976f" alt="Starting a Story" width="800">
+  <br>
+  <em>The user's journey begins with a simple prompt for any world they can imagine.</em>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6b956dc9-0ad3-4b77-96f2-2163be59d4ad" alt="Gameplay Loop" width="800">
+  <br>
+  <em>Our core experience: the AI drives the story, generates visuals, and presents choices.</em>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b4006d78-3ca0-4f16-a678-8099d0d327c7" alt="AI Generated Video" width="800">
+  <br>
+  <em>Cinematic videos are generated in real-time for key story moments.</em>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1478ca2a-901b-4c8b-bf42-10fa5ebdecc6" alt="Filled Media Gallery" width="800">
+  <br>
+  <em>The gallery automatically saves every image, video, and music track from the story.</em>
+</p>
+
+
+
 ## ✨ Key Features
 
 ### 🤖 Multi-Agent AI System
