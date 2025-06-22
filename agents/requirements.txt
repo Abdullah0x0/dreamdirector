@@ -1,0 +1,15 @@
+# AI Dungeon Master - Creativity Track Requirements
+# UC Berkeley AI Hackathon 2025
+
+# Core Google ADK
+google-adk>=1.0.0
+google-genai>=1.10.0
+
+# Additional utilities
+python-dotenv>=1.0.0
+streamlit>=1.28.0
+asyncio>=3.4.3
+
+# Optional: For enhanced demos
+pillow>=10.0.0
+requests>=2.31.0 

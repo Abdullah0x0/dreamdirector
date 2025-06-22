@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎬 DreamDirector - AI Cinematic Storytelling</title>
+    <meta name="description" content="Direct your dreams, live your story - AI-powered cinematic storytelling using Google ADK" />
+    
+    <!-- Custom Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Cinematic Background -->
+    <style>
+      body {
+        background: linear-gradient(135deg, #0a0a0f 0%, #1a1a24 100%);
+        background-attachment: fixed;
+        overflow-x: hidden;
+      }
+      
+      /* Cinematic particles */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+      }
+      
+      .particle {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: rgba(139, 92, 246, 0.3);
+        border-radius: 50%;
+        animation: float 8s linear infinite;
+      }
+      
+      @keyframes float {
+        0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+      }
+    </style>
+  </head>
+  <body class="bg-cinematic-bg text-white font-modern antialiased">
+    <!-- Cinematic Particles Background -->
+    <div class="particles" id="particles"></div>
+    
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Particle Animation Script -->
+    <script>
+      function createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 8) + 's';
+        document.getElementById('particles').appendChild(particle);
+        
+        setTimeout(() => {
+          particle.remove();
+        }, 18000);
+      }
+      
+      // Create particles continuously
+      setInterval(createParticle, 300);
+      
+      // Create initial particles
+      for (let i = 0; i < 20; i++) {
+        setTimeout(createParticle, i * 200);
+      }
+    </script>
+  </body>
+</html> 
