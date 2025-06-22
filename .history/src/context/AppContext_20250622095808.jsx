@@ -107,14 +107,11 @@ function appReducer(state, action) {
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState)
 
-  // Persist state to localStorage whenever it changes (but not media files)
+  // Persist state to localStorage whenever it changes
   useEffect(() => {
     try {
       const stateToSave = {
         ...state,
-        generatedImages: [], // Don't persist media URLs
-        generatedVideos: [], // Don't persist media URLs
-        generatedMusic: [], // Don't persist media URLs
         notifications: [], // Don't save notifications
         isGenerating: false, // Don't save loading states
         generationProgress: 0
@@ -123,7 +120,7 @@ export function AppProvider({ children }) {
     } catch (error) {
       console.error('Failed to persist state:', error)
     }
-  }, [state.currentStory, state.isStoryActive, state.storyHistory]) // Only persist on story changes, not media
+  }, [state])
 
   // API functions
   const startNewStory = async (storyRequest) => {
