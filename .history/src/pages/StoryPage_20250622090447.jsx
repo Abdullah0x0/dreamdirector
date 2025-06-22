@@ -248,8 +248,8 @@ function StoryPage() {
         })
       }
       
-      // **VIDEOS: Allow during regular gameplay too**
-      if (mediaFiles.videos && mediaFiles.videos.length > 0) {
+      // **VIDEOS: Only for epic finale climax**
+      if (mediaFiles.videos && mediaFiles.videos.length > 0 && currentStory?.story_complete) {
         const latestVideo = mediaFiles.videos[mediaFiles.videos.length - 1]
         dispatch({ 
           type: 'ADD_GENERATED_VIDEO', 
@@ -258,7 +258,7 @@ function StoryPage() {
             url: `/api/media/${latestVideo}`,
             filename: latestVideo,
             type: 'video',
-            title: currentStory?.story_complete ? '🎬 EPIC FINALE VIDEO' : '🎬 AI Generated Video',
+            title: '🎬 EPIC FINALE VIDEO',
             timestamp: new Date().toISOString()
           }
         })
@@ -291,22 +291,14 @@ function StoryPage() {
   }
 
   const resetStory = () => {
-    if (confirm('Are you sure you want to start a new story? This will clear your current progress.')) {
-      setStoryEvents([])
-      setStoryInput('')
-      dispatch({ type: 'SET_STORY_ACTIVE', payload: false })
-      dispatch({ type: 'SET_CURRENT_STORY', payload: null })
-      dispatch({ type: 'RESET_STATE' })
-      
-      // Clear localStorage as well
-      localStorage.removeItem('dreamdirector-state')
-      
-      // Show confirmation
-      dispatch({ type: 'ADD_NOTIFICATION', payload: {
-        type: 'success',
-        message: '✨ Story cleared! Ready for a new adventure.'
-      }})
-    }
+    setStoryEvents([])
+    setStoryInput('')
+    dispatch({ type: 'SET_STORY_ACTIVE', payload: false })
+    dispatch({ type: 'SET_CURRENT_STORY', payload: null })
+    dispatch({ type: 'RESET_STATE' })
+    
+    // **CLEAR OLD VIDEOS** - They shouldn't appear during regular story
+    dispatch({ type: 'CLEAR_GENERATED_VIDEOS' })
   }
 
 

@@ -101,21 +101,6 @@ function appReducer(state, action) {
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState)
 
-  // Persist state to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      const stateToSave = {
-        ...state,
-        notifications: [], // Don't save notifications
-        isGenerating: false, // Don't save loading states
-        generationProgress: 0
-      }
-      localStorage.setItem('dreamdirector-state', JSON.stringify(stateToSave))
-    } catch (error) {
-      console.error('Failed to persist state:', error)
-    }
-  }, [state])
-
   // API functions
   const startNewStory = async (storyRequest) => {
     try {

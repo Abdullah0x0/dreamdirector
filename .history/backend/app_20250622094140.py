@@ -299,40 +299,27 @@ async def generate_media(request: MediaRequest):
             generated_files = game_state.generated_music
             
         elif request.type == "video":
-            # **ALLOW VIDEOS DURING REGULAR STORY**
-            print("🎬 Generating video for current scene...")
+            # **NO VIDEOS DURING REGULAR STORY - Generate single image instead**
+            print("🎨 Generating single image instead of slow video...")
             try:
-                # Try to generate actual video
-                result = generate_direct_video(
-                    prompt=request.prompt,
-                    emotional_tone=request.emotional_tone
+                # Use the new single image generation
+                result = create_single_choice_image(
+                    chosen_action=f"cinematic moment: {request.prompt}",
+                    difficulty="medium",
+                    context=request.prompt
                 )
                 
-                # Check if video was actually generated
-                if game_state.generated_videos:
-                    generated_files = game_state.generated_videos
-                    result.update({
-                        "message": "🎬 AI video generated successfully!",
-                        "method": "direct_video_generation",
-                        "note": "Video generation may take 2-3 minutes"
-                    })
-                else:
-                    # Fallback to image if video generation failed
-                    print("🎨 Video generation failed, creating cinematic image instead...")
-                    result = create_single_choice_image(
-                        chosen_action=f"cinematic moment: {request.prompt}",
-                        difficulty="medium",
-                        context=request.prompt
-                    )
-                    generated_files = game_state.generated_images
-                    result.update({
-                        "message": "🎨 Generated cinematic image (video generation in progress)",
-                        "method": "fallback_to_image",
-                        "note": "Video may appear shortly in the gallery"
-                    })
+                # Return images instead of videos for faster experience
+                generated_files = game_state.generated_images
+                
+                result.update({
+                    "message": "🎨 Generated single image (15s) instead of slow video (3min)",
+                    "method": "single_choice_image",
+                    "note": "Videos only available during story climax"
+                })
                     
             except Exception as video_error:
-                print(f"⚠️ Video generation issue: {video_error}")
+                print(f"⚠️ Single image generation issue: {video_error}")
                 # Fallback to scene generation
                 result = generate_establishing_scene(
                     location=request.prompt,
@@ -340,10 +327,6 @@ async def generate_media(request: MediaRequest):
                     details="cinematic sequence"
                 )
                 generated_files = game_state.generated_images
-                result.update({
-                    "message": "🎨 Generated scene image (video generation unavailable)",
-                    "method": "fallback_scene_generation"
-                })
         else:
             raise HTTPException(status_code=400, detail="Invalid media type")
         
